@@ -6,6 +6,8 @@ from .commands.get_flights import get_flights
 from .commands.scrape_flight_details import scrape_flight_details
 from .commands.compile_flights import compile_flights
 from .commands.geocode import geocode
+from .commands.join import join
+from .commands.xls2csv import xls2csv
 
 # from .commands.scrape_incidents import scrape_incidents
 # from .commands.compile_logs import compile_logs
@@ -39,6 +41,8 @@ cli.add_command(get_flights)
 cli.add_command(scrape_flight_details)
 cli.add_command(compile_flights)
 cli.add_command(geocode)
+cli.add_command(join)
+cli.add_command(xls2csv)
 
 # cli.add_command(scrape_map)
 # cli.add_command(scrape_incidents)

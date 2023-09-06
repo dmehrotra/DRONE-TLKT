@@ -95,12 +95,17 @@ header = "success,latitude,longitude,geoid,block,block_group,tract,county,state,
     "--in_path",
     help="File with coordinates",
 )
+@click.option(
+    "-i",
+    "--out_path",
+    help="File with coordinates",
+)
 
 @timeit
-def geocode(ctx,in_path):
+def geocode(ctx, in_path, out_path):
     """Get census geocode info for the coordinates"""
 
-    out_file_path = f'{in_path.replace(".csv", "_geocoded.csv")}'
+    out_file_path = out_path
     
     coordinates = pd.concat([chunk for chunk in tqdm(pd.read_csv(in_path, chunksize=1000), desc='Loading data')])
     # coordinates.sample(160).to_csv('./data/testing.csv',index=False)

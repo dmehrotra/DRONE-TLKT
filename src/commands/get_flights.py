@@ -13,18 +13,6 @@ mys=[]
 logger = logging.getLogger(__name__)
 
 
-def get_incidents(service_areas):
-    incidents = []
-    for area in tqdm(service_areas["Service Area"].values,total=len(service_areas["Service Area"].values)):
-        url = f"https://data.sp0n.io/v1/homescreen/mapIncidents?serviceAreaCode={area}"
-        events = requests.get(url).json()
-        for kind in ["incidents", "inactiveIncidents"]:
-            for incident in events[kind]:
-                incident["area"] = area
-                incidents.append(incident)
-    
-    return pd.DataFrame(incidents)
-
 def enumerate_months(start_date, end_date):
     current_date = start_date
     while current_date <= end_date:
@@ -99,7 +87,7 @@ def get_flights(ctx, data_path, start_time, end_time):
                 a = soup.find_all('div',{'id':'main_clustermap_data_ajax'})[0].text.replace('\t','').replace('\n','').strip()
                 b = pd.DataFrame(json.loads(a))
                 b['department'] = department
-                b.columns = ['lat_map','lat_map','time','id','date','time_s','address_map','incident_id','type','department']
+                b.columns = ['lat_map','lon_map','time','id','date','time_s','address_map','incident_id','type','department']
                 df_container.append(b)
 
             except Exception as error:

@@ -13,18 +13,34 @@ help: ## List Citizen TLKT make tasks
 
 
 get_flights: ## Scraped whats visible on the map and update the manifest
-	python3 run.py get_flights --data_path "data" --start_time "1/1/2021" --end_time "8/1/2023"
+	python3 run.py get_flights --data_path "data" --start_time "1/1/2021" --end_time "9/1/2023"
 
 scrape_flight_details: ## Scraped whats visible on the map and update the manifest
-	python3 run.py scrape_flight_details --data_path "data" --kml_storage_path "/Volumes/easystore/Drones"
+	python3 run.py scrape_flight_details --data_path "data" --kml_storage_path "/Volumes/easystore/Drones" --kind "kml"
 
-compile_flights: 	
-	python3 run.py compile_flights --data_path "data" --kml_storage_path "/Volumes/easystore/Drones" --out_path "/Volumes/easystore/Drones"
+scrape_flight_details_timestamped: ## Scraped whats visible on the map and update the manifest
+	python3 run.py scrape_flight_details --data_path "data" --kml_storage_path "/Volumes/easystore/Drones" --kind "gpx"
 
-geocode: 	
-	python3 run.py geocode --in_path '/Volumes/easystore/Drones/compiled-flight-data.csv'
+compile_kml: 	
+	python3 run.py compile_flights --data_path "data" --kml_storage_path "/Volumes/easystore/Drones" --out_path "/Volumes/easystore/Drones" --kind "kml"
 
+compile_gpx: 	
+	python3 run.py compile_flights --data_path "data" --kml_storage_path "/Volumes/easystore/Drones" --out_path "/Volumes/easystore/Drones" --kind "gpx"
 
+geocode_kml: 	
+	python3 run.py geocode --in_path '/Volumes/easystore/Drones/compiled-flight-data-kml.csv' --out_path '/Volumes/easystore/Drones/geocoded.csv'
+
+geocode_gpx: 	
+	python3 run.py geocode --in_path '/Volumes/easystore/Drones/compiled-flight-data-gpx.csv' --out_path '/Volumes/easystore/Drones/geocoded.csv'
+
+add_census_and_reduce_resolution_of_gpx: ## spits out gpx with census data to easystore
+	python3 run.py join --in_path '/Volumes/easystore/Drones' --kind "gpx" --limit "S"
+
+add_census_and_reduce_resolution_of_kml:
+	python3 run.py join --in_path '/Volumes/easystore/Drones' --kind "kml" --limit "none"
+
+prepare_calls-for-service:
+	python3 run.py xls2csv --in_path '/Volumes/easystore/Drones' --kind "calls-for-service" --geocode_folder "geocodio"
 
 # scrape_24h_logs: ## Get Incident Updates from the last day
 # 	python3 run.py scrape_map --data_path "data"

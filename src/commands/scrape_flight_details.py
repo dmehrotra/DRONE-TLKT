@@ -11,20 +11,23 @@ import datetime as dt
 logger = logging.getLogger(__name__)
 
 
-async def fetch(session, url, nid, kml_path):
+async def fetch(session, url, nid, kml_path, kind):
     async with session.get(url, timeout=100) as response:
         rtext = await response.text()
-        async with aiofiles.open(f"{kml_path}/{nid}.kml", "w") as f:
-            await f.write(rtext)
+        if "gpx" in kind:
+            async with aiofiles.open(f"{kml_path}/{nid}.gpx", "w") as f:
+                await f.write(rtext)
+        else:
+            async with aiofiles.open(f"{kml_path}/{nid}.kml", "w") as f:
+                await f.write(rtext)
 
 
-
-async def fetch_all(session, ids, kml_path):
+async def fetch_all(session, ids, kml_path, kind):
     tasks = []
 
     for nid in ids:
-        url = f"http://app.airdata.com/kml?flight={nid}&maps=1&pointer=27&default_color=fff4c530&default_width=2&color_width=3&o=1"
-        task = asyncio.create_task(fetch(session, url, nid, kml_path))
+        url = f"http://app.airdata.com/{kind}?flight={nid}"
+        task = asyncio.create_task(fetch(session, url, nid, kml_path, kind))
         tasks.append(task)
 
     results = await asyncio.gather(*tasks)
@@ -32,9 +35,9 @@ async def fetch_all(session, ids, kml_path):
     return results
 
 
-async def main(ids, kml_path):
+async def main(ids, kml_path,kind):
     async with aiohttp.ClientSession() as session:
-        resp = await fetch_all(session, ids, kml_path)
+        resp = await fetch_all(session, ids, kml_path, kind)
 
 
 
@@ -55,11 +58,17 @@ async def main(ids, kml_path):
     default="/Volumes/easystore/Drones",
     help=""
     )
+@click.option(
+    "-t",
+    "--kind",
+    default="kml",
+    help=""
+    )
 
 
-def scrape_flight_details(ctx, data_path, kml_storage_path):
+def scrape_flight_details(ctx, data_path, kml_storage_path, kind):
     manifest_file = f"{data_path}/all-flights-manifest.csv"
-    kml_path = f"{kml_storage_path}/flights/"
+    kml_path = f"{kml_storage_path}/flights/{kind}"
 
     all_flights = pd.read_csv(manifest_file)
     
@@ -67,6 +76,8 @@ def scrape_flight_details(ctx, data_path, kml_storage_path):
     for filename in os.listdir(f"{kml_path}"):
         f = os.path.join(f"{kml_path}", filename)
         if f.endswith('kml'):
+            files.append(f.split('/')[-1].replace('.kml',''))
+        elif f.endswith('gpx'):
             files.append(f.split('/')[-1].replace('.kml',''))
  
     logger.warning(f"Total Flight Details Scraped: {len(files)}")
@@ -81,7 +92,7 @@ def scrape_flight_details(ctx, data_path, kml_storage_path):
     
     for i in tqdm(range(0, len(to_run), chunk_size)):
         chunk = to_run[i : i + chunk_size]
-        asyncio.get_event_loop().run_until_complete(main(chunk,kml_path))
+        asyncio.get_event_loop().run_until_complete(main(chunk,kml_path,kind))
 
     # for index, row in all_incidents.iterrows():
     #     url = f"https://data.sp0n.io/v1/incident/{row['incidentId']}"
