@@ -107,7 +107,7 @@ def geocode(ctx, in_path, out_path):
 
     out_file_path = out_path
     
-    coordinates = pd.concat([chunk for chunk in tqdm(pd.read_csv(in_path, chunksize=1000), desc='Loading data')])
+    coordinates = pd.concat([chunk for chunk in tqdm(pd.read_csv(in_path, chunksize=10000), desc='Loading data')])
     # coordinates.sample(160).to_csv('./data/testing.csv',index=False)
     coordinates = coordinates[['latitude','longitude']].drop_duplicates()
 

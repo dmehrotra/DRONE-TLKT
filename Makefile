@@ -21,6 +21,9 @@ scrape_flight_details: ## Scraped whats visible on the map and update the manife
 scrape_flight_details_timestamped: ## Scraped whats visible on the map and update the manifest
 	python3 run.py scrape_flight_details --data_path "data" --kml_storage_path "/Volumes/easystore/Drones" --kind "gpx"
 
+scrape_flight_messages: ## Scraped whats visible on the map and update the manifest
+	python3 run.py scrape_flight_details --data_path "data" --kml_storage_path "/Volumes/easystore/Drones" --kind "kml-messages"
+
 compile_kml: 	
 	python3 run.py compile_flights --data_path "data" --kml_storage_path "/Volumes/easystore/Drones" --out_path "/Volumes/easystore/Drones" --kind "kml"
 
@@ -41,6 +44,10 @@ add_census_and_reduce_resolution_of_kml:
 
 prepare_calls-for-service:
 	python3 run.py xls2csv --in_path '/Volumes/easystore/Drones' --kind "calls-for-service" --geocode_folder "geocodio"
+
+add_census_to_calls-for-sevice:
+	#relies on data from 3p geocoder
+	python3 run.py join3p --in_path '/Volumes/easystore/Drones/calls-for-service/calls-for-service.csv' --column "Address" --geocode_file "/Volumes/easystore/Drones/geocodio/calls-for-service-addresses_geocodio-9-1.csv"
 
 # scrape_24h_logs: ## Get Incident Updates from the last day
 # 	python3 run.py scrape_map --data_path "data"

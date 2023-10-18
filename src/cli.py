@@ -8,6 +8,7 @@ from .commands.compile_flights import compile_flights
 from .commands.geocode import geocode
 from .commands.join import join
 from .commands.xls2csv import xls2csv
+from .commands.join3p import join3p
 
 # from .commands.scrape_incidents import scrape_incidents
 # from .commands.compile_logs import compile_logs
@@ -43,6 +44,7 @@ cli.add_command(compile_flights)
 cli.add_command(geocode)
 cli.add_command(join)
 cli.add_command(xls2csv)
+cli.add_command(join3p)
 
 # cli.add_command(scrape_map)
 # cli.add_command(scrape_incidents)

@@ -7,7 +7,7 @@ from tqdm import tqdm
 import pandas as pd
 import logging
 import datetime as dt
-
+import time
 logger = logging.getLogger(__name__)
 
 
@@ -93,6 +93,7 @@ def scrape_flight_details(ctx, data_path, kml_storage_path, kind):
     for i in tqdm(range(0, len(to_run), chunk_size)):
         chunk = to_run[i : i + chunk_size]
         asyncio.get_event_loop().run_until_complete(main(chunk,kml_path,kind))
+        time.sleep(3)
 
     # for index, row in all_incidents.iterrows():
     #     url = f"https://data.sp0n.io/v1/incident/{row['incidentId']}"
