@@ -88,12 +88,12 @@ def scrape_flight_details(ctx, data_path, kml_storage_path, kind):
 
     to_run = to_run["id"].sample(frac=1).drop_duplicates().values
 
-    chunk_size = 5
+    chunk_size = 1
     
     for i in tqdm(range(0, len(to_run), chunk_size)):
         chunk = to_run[i : i + chunk_size]
         asyncio.get_event_loop().run_until_complete(main(chunk,kml_path,kind))
-        time.sleep(3)
+        time.sleep(4)
 
     # for index, row in all_incidents.iterrows():
     #     url = f"https://data.sp0n.io/v1/incident/{row['incidentId']}"
