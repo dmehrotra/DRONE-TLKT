@@ -23,8 +23,6 @@ Drone flight paths reflect socioeconomic divides. WIRED’s review of nearly 10,
 
 Residents report feeling under constant surveillance. Some avoid spending time outdoors or near windows. One individual said the stress led him to the ER for depression.
 
-## Surveillance Patterns and Privacy Concerns
-
 The drones, capable of capturing facial details, have filmed hundreds of hours of footage while flying over sensitive sites—hospitals, schools, churches, law offices, and more. Privacy advocates question whether this constitutes mass surveillance. The department states that drones are only dispatched in response to 911 calls or lawful searches, and flight logs generally support that—though some 10% of flights lacked a clear stated purpose.
 
 Some residents expressed trust in the program, while others cited mission creep—where the presence of drones justifies expanded use. Several ex-CVPD leaders now work for drone manufacturers, promoting the model elsewhere.
